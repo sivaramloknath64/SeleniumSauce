@@ -1,0 +1,56 @@
+services:
+  selenium-hub:
+    image: selenium/hub:4.1.4-20220427
+    container_name: selenium-hub
+    ports:
+      - "4444:4444"  # Exposing only the WebDriver traffic port (selenium grid console)
+    environment:
+      - SE_NODE_MAX_SESSIONS=5  # Optional: Customize if you need to control max sessions on hub
+    networks:
+      - selenium-grid
+
+  chrome:
+    image: selenium/node-chrome:4.1.4-20220427
+    shm_size: 1gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub  # Points to the selenium hub service by name
+      - SE_EVENT_BUS_PUBLISH_PORT=4442  # Event bus publish port
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443  # Event bus subscribe port
+      - SE_NODE_MAX_INSTANCES=1
+      - SE_NODE_MAX_SESSIONS=1
+    networks:
+      - selenium-grid
+
+  edge:
+    image: selenium/node-edge:4.1.4-20220427
+    shm_size: 1gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub  # Points to the selenium hub service by name
+      - SE_EVENT_BUS_PUBLISH_PORT=4442  # Event bus publish port
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443  # Event bus subscribe port
+      - SE_NODE_MAX_INSTANCES=1
+      - SE_NODE_MAX_SESSIONS=1
+    networks:
+      - selenium-grid
+
+  firefox:
+    image: selenium/node-firefox:4.1.4-20220427
+    shm_size: 1gb
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub  # Points to the selenium hub service by name
+      - SE_EVENT_BUS_PUBLISH_PORT=4442  # Event bus publish port
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443  # Event bus subscribe port
+      - SE_NODE_MAX_INSTANCES=1
+      - SE_NODE_MAX_SESSIONS=1
+    networks:
+      - selenium-grid
+
+networks:
+  selenium-grid:
+    driver: bridge  # A dedicated network for Selenium hub and nodes
