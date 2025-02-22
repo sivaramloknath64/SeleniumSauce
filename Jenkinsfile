@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_COMPOSE_FILE = "docker-compose.yml"
+        DOCKER_COMPOSE_FILE = "docker-compose.yaml"
         GRID_URL = "http://localhost:4444/wd/hub"
         // PROJECT_DIR will be automatically set to the directory of the Git repo
         PROJECT_DIR = "${env.WORKSPACE}" // This is where the repo will be cloned
