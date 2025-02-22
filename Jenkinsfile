@@ -21,14 +21,14 @@ pipeline {
             steps {
                 script {
                     // Ensure Docker is running
-                    sh "docker --version"
-                    sh "docker-compose --version"
+                    bat "docker --version"
+                    bat "docker-compose --version"
 
                     // Start the Selenium Grid using Docker Compose
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
+                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
 
                     // Ensure the Selenium Grid is up and running
-                    sh "docker ps"
+                    bat "docker ps"
                 }
             }
         }
@@ -39,7 +39,7 @@ pipeline {
                     // Running tests in the directory where the Git project is cloned
                     dir("${PROJECT_DIR}") {
                         // For example, if your project is a Maven project:
-                        sh "mvn clean test"
+                        bat "mvn clean test"
                     }
                 }
             }
@@ -49,7 +49,7 @@ pipeline {
             steps {
                 script {
                     // Clean up the Docker containers after tests are completed
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
+                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
                 }
             }
         }
