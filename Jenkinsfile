@@ -49,7 +49,8 @@ pipeline {
             steps {
                 script {
                     // Clean up the Docker containers after tests are completed
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
+                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} down --rmi all"
+
                 }
             }
         }
